@@ -1,0 +1,23 @@
+run:
+  deadline: 1m
+  tests: true
+
+linters:
+  disable-all: true
+  enable:
+    - gofmt
+    - govet
+    - staticcheck
+    - revive
+    - deadcode
+    - gosimple
+    - ineffassign
+    - unused
+    - goconst
+    - gocritic
+    - godot
+    - misspell
+    - nlreturn
+    - noctx
+    - whitespace
+    - varcheck

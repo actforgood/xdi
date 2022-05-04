@@ -1,0 +1,13 @@
+.idea/*
+.vscode/*
+bin/*
+_example/
+
+.DS_Store
+
+*.exe
+*.exe~
+*.so
+
+cover.out
+cover.html
