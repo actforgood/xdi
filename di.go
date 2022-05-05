@@ -48,17 +48,17 @@ func NewDiManager() *DiManager {
 
 // AddDefinition adds new definition for a dependency instantiation/retrieval.
 // Multiple calls with same definition ID will overwrite previous definition.
-func (om *DiManager) AddDefinition(def DiManagerDef) {
-	om.def[def.ID] = def
+func (diMngr *DiManager) AddDefinition(def DiManagerDef) {
+	diMngr.def[def.ID] = def
 }
 
 // Get returns a dependency if a definition for it was provided previously, or nil otherwise.
-func (om *DiManager) Get(id string) interface{} {
+func (diMngr *DiManager) Get(id string) interface{} {
 	// look for definition.
-	def, foundDef := om.def[id]
+	def, foundDef := diMngr.def[id]
 	if !foundDef {
 		// if it's a shared dependency already instantiated, return it.
-		if dep, foundRegistry := om.sharedRegistry[id]; foundRegistry {
+		if dep, foundRegistry := diMngr.sharedRegistry[id]; foundRegistry {
 			return dep
 		}
 
@@ -69,10 +69,10 @@ func (om *DiManager) Get(id string) interface{} {
 
 	if def.Shared {
 		// store instance in shared registry.
-		om.sharedRegistry[id] = dep
+		diMngr.sharedRegistry[id] = dep
 		// if it's a shared dependency we can dispose of its definition and free memory,
 		// dependency will be returned from sharedRegistry on an eventual next Get() call for it.
-		delete(om.def, id)
+		delete(diMngr.def, id)
 	}
 
 	return dep
