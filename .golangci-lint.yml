@@ -1,5 +1,5 @@
 run:
-  deadline: 1m
+  deadline: 5m
   tests: true
 
 linters:
@@ -21,3 +21,6 @@ linters:
     - noctx
     - whitespace
     - varcheck
+
+issues:
+  exclude-use-default: false
