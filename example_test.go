@@ -62,13 +62,11 @@ func (srv DummyProductService) CheckAvailability(sku string, qty uint) (bool, er
 // Do not inject it/use it directly, in your application's objects.
 // It should be used only in the bootstrap process of your application and/or main.go,
 // as a centralized container of dependencies.
-var DiManager = xdi.NewDiManager()
-
-const diProductRepoID = "app.repository.Product"
+var DiManager = xdi.NewManager()
 
 func init() {
-	DiManager.AddDefinition(xdi.DiManagerDef{
-		ID: diProductRepoID,
+	DiManager.AddDefinition(xdi.Definition{
+		ID: "app.repository.product",
 		Initializer: func() interface{} {
 			return NewDummyProductRepository()
 		},
@@ -76,14 +74,12 @@ func init() {
 	})
 }
 
-const diProductServiceID = "app.service.Product"
-
 func init() {
-	DiManager.AddDefinition(xdi.DiManagerDef{
-		ID: diProductServiceID,
+	DiManager.AddDefinition(xdi.Definition{
+		ID: "app.service.product",
 		Initializer: func() interface{} {
 			return NewDummyProductService(
-				DiManager.Get(diProductRepoID).(ProductRepository),
+				DiManager.Get("app.repository.product").(ProductRepository),
 			)
 		},
 		Shared: true,
@@ -94,8 +90,8 @@ func init() {
 
 // end some application logic
 
-func ExampleDiManager() {
-	productService := DiManager.Get(diProductServiceID).(ProductService)
+func ExampleManager() {
+	productService := DiManager.Get("app.service.product").(ProductService)
 	isAvailable, _ := productService.CheckAvailability("some-sku", 2)
 	fmt.Println("isAvailable:", isAvailable)
 
