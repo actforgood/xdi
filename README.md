@@ -10,6 +10,13 @@
 Package `xdi` provides a centralized dependency injection manager which holds definitions for an application's objects/dependencies.  
 
 
+### Installation
+
+```shell
+$ go get -u github.com/actforgood/xdi
+```
+
+
 ### Example
 Basic example:  
 ```go
