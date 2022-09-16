@@ -1,4 +1,4 @@
-// Copyright 2022 Bogdan Constantinescu.
+// Copyright The ActForGood Authors.
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://github.com/actforgood/xdi/LICENSE.
@@ -6,9 +6,10 @@
 package xdi
 
 const (
-	// FilterAllRegistered specifies that all registered object IDs should be returned by `ListIDs`.
+	// FilterAllRegistered specifies that all registered object IDs should be returned by [Manager.ListIDs].
 	FilterAllRegistered byte = 1
-	// FilterInitializedShared specifies that only shared objects that have been already initialized (there was at least one `Get call for them) should be returned by `ListIDs`.
+	// FilterInitializedShared specifies that only shared objects that have been already initialized
+	// (there was at least one [Manager.Get] call for them) should be returned by [Manager.ListIDs].
 	FilterInitializedShared byte = 2
 )
 
