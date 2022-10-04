@@ -3,6 +3,7 @@
 [![Build Status](https://github.com/actforgood/xdi/actions/workflows/build.yml/badge.svg)](https://github.com/actforgood/xdi/actions/workflows/build.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://raw.githubusercontent.com/actforgood/xdi/main/LICENSE)
 [![Coverage Status](https://coveralls.io/repos/github/actforgood/xdi/badge.svg?branch=main)](https://coveralls.io/github/actforgood/xdi?branch=main)
+[![Goreportcard](https://goreportcard.com/badge/github.com/actforgood/xdi)](https://goreportcard.com/report/github.com/actforgood/xdi)
 [![Go Reference](https://pkg.go.dev/badge/github.com/actforgood/xdi.svg)](https://pkg.go.dev/github.com/actforgood/xdi)  
 
 ---
