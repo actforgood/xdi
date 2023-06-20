@@ -1,4 +1,4 @@
-LINTER_VERSION=v1.49.0
+LINTER_VERSION=v1.53.3
 LINTER=./bin/golangci-lint
 ifeq ($(OS),Windows_NT)
 	LINTER=./bin/golangci-lint.exe
@@ -29,7 +29,7 @@ test: ## Run tests (with race condition detection).
 
 .PHONY: bench
 bench: ## Run benchmarks.
-	go test -race -run=^# -benchmem -benchtime=5s -bench=.
+	go test -race -benchmem -benchtime=5s -bench=.
 
 .PHONY: cover
 cover: ## Run tests with coverage. Generates "cover.out" profile and its html representation.

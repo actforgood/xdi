@@ -5,6 +5,8 @@
 
 package xdi
 
+import "sync"
+
 const (
 	// FilterAllRegistered specifies that all registered object IDs should be returned by [Manager.ListIDs].
 	FilterAllRegistered byte = 1
@@ -35,10 +37,10 @@ type (
 		// Initializer is a factory/function that returns a dependency.
 		Initializer InitializerFunc
 		// Shared is a flag whether this dependency is shared or not.
-		// If it is shared, multiple Get() calls for the same identifier will return "same" instance from a registry,
+		// If it is shared, multiple [Manager.Get] calls for the same identifier will return "same" instance from a registry,
 		// see also the note below.
-		// If it is not shared, multiple Get() calls for the same identifier will return "different" instances
-		// (Initializer function will be called on each Get() call).
+		// If it is not shared, multiple [Manager.Get] calls for the same identifier will return "different" instances
+		// (Initializer function will be called on each [Manager.Get] call).
 		// Note: it makes sense for Initializer function to produce a pointer/reference type if
 		// you really want it to be shared. On the same principle, if your Initializer function returns
 		// a singleton for example, shared flag is useless, that instance will always be shared.
@@ -79,7 +81,7 @@ func (diMngr *Manager) Get(id string) interface{} {
 		// store instance in shared registry.
 		diMngr.sharedRegistry[id] = dep
 		// if it's a shared dependency we can dispose of its definition and free memory,
-		// dependency will be returned from sharedRegistry on an eventual next Get() call for it.
+		// dependency will be returned from sharedRegistry on an eventual next [Manager.Get] call for it.
 		delete(diMngr.def, id)
 	}
 
@@ -130,4 +132,18 @@ func (diMngr *Manager) ListIDs(filter ...byte) []string {
 	}
 
 	return IDs
+}
+
+var (
+	managerSingletonOnce     sync.Once
+	managerSingletonInstance *Manager
+)
+
+// ManagerInstance returns a singleon Manager object.
+func ManagerInstance() *Manager {
+	managerSingletonOnce.Do(func() {
+		managerSingletonInstance = NewManager()
+	})
+
+	return managerSingletonInstance
 }

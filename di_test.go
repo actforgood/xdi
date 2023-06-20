@@ -151,6 +151,28 @@ func TestManager_ListIDs(t *testing.T) {
 	}
 }
 
+func TestManagerInstance(t *testing.T) {
+	t.Parallel()
+
+	// act
+	subject := xdi.ManagerInstance()
+
+	// assert
+	if subject == nil {
+		t.Fatalf("expected '%+v', but got '%+v'\n", "*Manager", nil)
+	}
+
+	for i := 0; i < 10; i++ {
+		// act
+		sameObject := xdi.ManagerInstance()
+
+		// assert
+		if sameObject != subject {
+			t.Fatalf("expected '%p', but got '%p'\n", subject, sameObject)
+		}
+	}
+}
+
 func BenchmarkManager_Get_shared(b *testing.B) {
 	diManager := setUpDiManager()
 

@@ -25,6 +25,7 @@ Basic example:
 // Do not inject it/use it directly, in your application's objects.
 // It should be used only in the bootstrap process of your application and/or main.go,
 // as a centralized container of dependencies.
+// Note: instead of declaring a variable, you can also use the singleton provided by xdi.ManagerInstance().
 var DiManager = xdi.NewManager()
 
 func init() {

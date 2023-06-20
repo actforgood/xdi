@@ -15,6 +15,7 @@ linters:
     - goconst
     - gocritic
     - godot
+    - lll
     - misspell
     - nlreturn
     - noctx

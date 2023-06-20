@@ -37,13 +37,13 @@ type ProductService interface {
 	CheckAvailability(sku string, qty uint) (bool, error)
 }
 
-// DummyProductService is the default implementation for ProductService contract.
+// DummyProductService is the default implementation for [ProductService] contract.
 type DummyProductService struct {
 	repo ProductRepository
 }
 
 // NewDummyProductService returns new instance of
-// a dummyProductService.
+// a DummyProductService.
 func NewDummyProductService(repo ProductRepository) *DummyProductService {
 	return &DummyProductService{repo: repo}
 }
@@ -62,6 +62,7 @@ func (srv DummyProductService) CheckAvailability(sku string, qty uint) (bool, er
 // Do not inject it/use it directly, in your application's objects.
 // It should be used only in the bootstrap process of your application and/or main.go,
 // as a centralized container of dependencies.
+// Note: instead of declaring a variable, you can also use the singleton provided by xdi.ManagerInstance().
 var DiManager = xdi.NewManager()
 
 func init() {
