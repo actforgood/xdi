@@ -11,24 +11,24 @@ import (
 // ProductRepository ...
 type ProductRepository interface {
 	// GetBySKU returns a product data by SKU.
-	GetBySKU(sku string) (map[string]interface{}, error)
+	GetBySKU(sku string) (map[string]any, error)
 }
 
 // DummyProductRepository is the default implementation for ProductRepository contract.
 type DummyProductRepository struct{}
 
-func (DummyProductRepository) GetBySKU(sku string) (map[string]interface{}, error) {
-	return map[string]interface{}{
-		"sku":   sku,
-		"price": 99.9,
-		"stock": uint(100),
-	}, nil
-}
-
 // NewDummyProductRepository returns new instance of
 // a DummyProductRepository.
 func NewDummyProductRepository() *DummyProductRepository {
 	return &DummyProductRepository{}
+}
+
+func (DummyProductRepository) GetBySKU(sku string) (map[string]any, error) {
+	return map[string]any{
+		"sku":   sku,
+		"price": 99.9,
+		"stock": uint(100),
+	}, nil
 }
 
 // ProductService ...
@@ -68,7 +68,7 @@ var DiManager = xdi.NewManager()
 func init() {
 	DiManager.AddDefinition(xdi.Definition{
 		ID: "app.repository.product",
-		Initializer: func() interface{} {
+		Initializer: func() any {
 			return NewDummyProductRepository()
 		},
 		Shared: true,
@@ -78,7 +78,7 @@ func init() {
 func init() {
 	DiManager.AddDefinition(xdi.Definition{
 		ID: "app.service.product",
-		Initializer: func() interface{} {
+		Initializer: func() any {
 			return NewDummyProductService(
 				DiManager.Get("app.repository.product").(ProductRepository),
 			)

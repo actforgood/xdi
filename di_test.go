@@ -36,7 +36,7 @@ func testManagerGetShared(t *testing.T) {
 	)
 	subject.AddDefinition(xdi.Definition{
 		ID: testID,
-		Initializer: func() interface{} {
+		Initializer: func() any {
 			return &dummy{age: 35}
 		},
 		Shared: true,
@@ -47,7 +47,7 @@ func testManagerGetShared(t *testing.T) {
 	if result == nil {
 		t.Fatalf("expected '%+v', but got '%+v'\n", "*dummy", nil)
 	}
-	for i := 0; i < 10; i++ {
+	for range 10 {
 		resultAgain := subject.Get(testID)
 		if result != resultAgain {
 			t.Errorf("expected '%+v', but got '%+v'\n", result, resultAgain)
@@ -66,7 +66,7 @@ func testManagerGetNotShared(t *testing.T) {
 	)
 	subject.AddDefinition(xdi.Definition{
 		ID: testID,
-		Initializer: func() interface{} {
+		Initializer: func() any {
 			return &dummy{age: 35}
 		},
 		Shared: false,
@@ -77,7 +77,7 @@ func testManagerGetNotShared(t *testing.T) {
 	if result == nil {
 		t.Fatalf("expected '%+v', but got '%+v'\n", "*dummy", nil)
 	}
-	for i := 0; i < 10; i++ {
+	for i := range 10 {
 		resultAgain := subject.Get(testID)
 		if result == resultAgain {
 			t.Errorf("expected not to be the same, trial = %+v\n", i+1)
@@ -162,7 +162,7 @@ func TestManagerInstance(t *testing.T) {
 		t.Fatalf("expected '%+v', but got '%+v'\n", "*Manager", nil)
 	}
 
-	for i := 0; i < 10; i++ {
+	for range 10 {
 		// act
 		sameObject := xdi.ManagerInstance()
 
@@ -179,7 +179,7 @@ func BenchmarkManager_Get_shared(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 
-	for n := 0; n < b.N; n++ {
+	for range b.N {
 		_ = diManager.Get("dummy.age.shared.20")
 	}
 }
@@ -190,7 +190,7 @@ func BenchmarkManager_Get_notShared(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 
-	for n := 0; n < b.N; n++ {
+	for range b.N {
 		_ = diManager.Get("dummy.age.notshared.40")
 	}
 }
@@ -203,7 +203,7 @@ func BenchmarkManager_ListIDs(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 
-	for n := 0; n < b.N; n++ {
+	for range b.N {
 		_ = diManager.ListIDs()
 	}
 }
@@ -228,7 +228,7 @@ func setUpDiManager() *xdi.Manager {
 		id += strconv.FormatInt(age, 10)
 		diManager.AddDefinition(xdi.Definition{
 			ID: id,
-			Initializer: func() interface{} {
+			Initializer: func() any {
 				return &dummy{age: age}
 			},
 			Shared: shared,

@@ -18,7 +18,7 @@ const (
 type (
 	// InitializerFunc is a simple function that returns an instance of a dependency,
 	// whatever that dependency is (an object / a function / a config, etc.).
-	InitializerFunc func() interface{}
+	InitializerFunc func() any
 
 	// Manager is a container for dependencies and their definitions.
 	// Its APIs are not concurrent safe for use.
@@ -26,7 +26,7 @@ type (
 		// def contains initialization definitions indexed by a string identifier.
 		def map[string]Definition
 		// sharedRegistry contains shared instances.
-		sharedRegistry map[string]interface{}
+		sharedRegistry map[string]any
 	}
 
 	// Definition holds information needed to initialize a dependency.
@@ -52,7 +52,7 @@ type (
 func NewManager() *Manager {
 	return &Manager{
 		def:            make(map[string]Definition),
-		sharedRegistry: make(map[string]interface{}),
+		sharedRegistry: make(map[string]any),
 	}
 }
 
@@ -63,7 +63,7 @@ func (diMngr *Manager) AddDefinition(def Definition) {
 }
 
 // Get returns a dependency if a definition for it was provided previously, or nil otherwise.
-func (diMngr *Manager) Get(id string) interface{} {
+func (diMngr *Manager) Get(id string) any {
 	// look for definition.
 	def, foundDef := diMngr.def[id]
 	if !foundDef {

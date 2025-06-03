@@ -14,7 +14,7 @@ Package `xdi` provides a centralized dependency injection manager which holds de
 ### Installation
 
 ```shell
-$ go get -u github.com/actforgood/xdi
+$ go get github.com/actforgood/xdi
 ```
 
 
@@ -31,7 +31,7 @@ var DiManager = xdi.NewManager()
 func init() {
 	DiManager.AddDefinition(xdi.Definition{
 		ID: "app.repository.product",
-		Initializer: func() interface{} {
+		Initializer: func() any {
 			return NewDummyProductRepository()
 		},
 		Shared: true,
@@ -41,7 +41,7 @@ func init() {
 func init() {
 	DiManager.AddDefinition(xdi.Definition{
 		ID: "app.service.product",
-		Initializer: func() interface{} {
+		Initializer: func() any {
 			return NewDummyProductService(
 				DiManager.Get("app.repository.product").(ProductRepository),
 			)
