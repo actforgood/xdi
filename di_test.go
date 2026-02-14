@@ -7,6 +7,7 @@ package xdi_test
 
 import (
 	"fmt"
+	"slices"
 	"strconv"
 	"testing"
 
@@ -132,7 +133,7 @@ func TestManager_ListIDs(t *testing.T) {
 		t.Errorf("expected '%+v', but got '%+v'", len(expectedShared), len(result1))
 	}
 	for _, id := range expectedShared {
-		if !isInSlice(id, result1) {
+		if !slices.Contains(result1, id) {
 			t.Errorf("expected id '%+v' to be found", id)
 		}
 	}
@@ -145,7 +146,7 @@ func TestManager_ListIDs(t *testing.T) {
 		t.Errorf("expected '%+v', but got '%+v'", len(expectedAll), len(result2))
 	}
 	for _, id := range expectedAll {
-		if !isInSlice(id, result2) {
+		if !slices.Contains(result2, id) {
 			t.Errorf("expected id '%+v' to be found", id)
 		}
 	}
@@ -211,20 +212,17 @@ func BenchmarkManager_ListIDs(b *testing.B) {
 // setUpDiManager makes a Manager with 50 registered objects,
 // 30 - shared, 20 - not shared.
 func setUpDiManager() *xdi.Manager {
-	var (
-		diManager = xdi.NewManager()
-		i         int64
-	)
-	for i = 1; i <= 50; i++ {
+	diManager := xdi.NewManager()
+	for i := range 50 {
 		id := "dummy.age."
 		shared := true
-		if i > 30 {
+		if i >= 30 {
 			shared = false
 			id += "notshared."
 		} else {
 			id += "shared."
 		}
-		age := i // capture range variable
+		age := int64(i + 1)
 		id += strconv.FormatInt(age, 10)
 		diManager.AddDefinition(xdi.Definition{
 			ID: id,
@@ -236,15 +234,4 @@ func setUpDiManager() *xdi.Manager {
 	}
 
 	return diManager
-}
-
-// isInSlice searches for needle in the haystack and returns true if it is found.
-func isInSlice(needle string, haystack []string) bool {
-	for _, value := range haystack {
-		if needle == value {
-			return true
-		}
-	}
-
-	return false
 }

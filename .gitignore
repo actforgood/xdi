@@ -8,6 +8,3 @@ _example/
 *.exe
 *.exe~
 *.so
-
-cover.out
-cover.html
